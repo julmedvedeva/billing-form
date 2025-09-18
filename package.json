@@ -15,16 +15,6 @@
     "lint:check": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
-  },
-  "lint-staged": {
-    "*.{js,ts,vue}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md,css,html}": [
-      "prettier --write"
-    ]
   },
   "dependencies": {
     "pinia": "2.3.1",
@@ -47,8 +37,6 @@
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-vue": "^10.4.0",
     "globals": "^16.4.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.1.6",
     "npm-run-all2": "^8.0.4",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
