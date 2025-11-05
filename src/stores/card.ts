@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import type { CartData, ExpirationDate } from '../types'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { cardApiService } from '@/api'
+import { enrichCardNumber, getRandomMonth, getRandomYear } from '@/utils'
 
 export const useCardStore = defineStore('card', () => {
   const cardData = ref<CartData>({
@@ -12,15 +14,26 @@ export const useCardStore = defineStore('card', () => {
       month: 0,
       year: 0,
     },
+    paying: '',
+  })
+
+  // computed fullName с валидацией
+  const fullName = computed<string>({
+    get: () => `${cardData.value.name} ${cardData.value.surname}`.trim(),
+    set: (value: string) => {
+      const parts = value.trim().split(' ').filter(Boolean)
+      cardData.value.name = parts[0] || ''
+      // если фамилия не введена, ставим дефолт
+      cardData.value.surname = parts[1] || '-'
+    },
   })
 
   const setCardData = (data: CartData) => {
     cardData.value = data
   }
 
-  const getCardData = () => {
-    return cardData.value
-  }
+  const getCardData = () => cardData.value
+
   const clearCardData = () => {
     cardData.value = {
       name: '',
@@ -31,34 +44,59 @@ export const useCardStore = defineStore('card', () => {
         month: 0,
         year: 0,
       },
+      paying: '',
     }
   }
 
   const setCardNumber = (number: string) => {
     cardData.value.number = number
   }
-  const setCardName = (name: string) => {
-    cardData.value.name = name
-  }
-  const setCardSurname = (surname: string) => {
-    cardData.value.surname = surname
-  }
+
   const setCardCvc = (cvc: string) => {
     cardData.value.cvc = cvc
   }
+
   const setCardExpirationDate = (expirationDate: ExpirationDate) => {
     cardData.value.expirationDate = expirationDate
   }
 
+  const setPaying = (paying: string) => {
+    cardData.value.paying = paying
+  }
+
+  const sendCardInfo = async (cardInfo: CartData) => {
+    return await cardApiService.send(cardInfo)
+  }
+
+  const getCardInfo = async (id: string) => {
+    const data = await cardApiService.getCardInfo(id)
+    const enrichedNumber = enrichCardNumber(data.number)
+    const newCardData = {
+      number: enrichedNumber,
+      name: data.name,
+      surname: data.surname,
+      expirationDate: {
+        month: getRandomMonth(),
+        year: getRandomYear(),
+      },
+      cvc: '123',
+      paying: '123',
+    }
+
+    setCardData(newCardData)
+  }
+
   return {
     cardData,
+    fullName,
     setCardData,
     getCardData,
     clearCardData,
     setCardNumber,
-    setCardName,
-    setCardSurname,
     setCardCvc,
     setCardExpirationDate,
+    setPaying,
+    sendCardInfo,
+    getCardInfo,
   }
 })

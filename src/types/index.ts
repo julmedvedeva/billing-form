@@ -4,16 +4,12 @@ export type CartData = {
   number: string
   cvc: string
   expirationDate: ExpirationDate
+  paying: string
 }
 
 export type ExpirationDate = {
   month: number
   year: number
-}
-
-export type FormData = {
-  paying: string
-  cardData: CartData
 }
 
 export type ErrorViolation = {
