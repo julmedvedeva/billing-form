@@ -11,8 +11,14 @@
       :class="{ error: errors.length > 0 }"
       @input="onInput"
     />
-    <div v-if="errors.length > 0">
-      <p v-for="error in errors" :key="error.field">{{ error.message }}</p>
+    <div v-if="errors.length > 0" class="-mt-4">
+      <p
+        class="text-[10px] text-red-500"
+        v-for="error in errors"
+        :key="error.field"
+      >
+        {{ error.message }}
+      </p>
     </div>
   </div>
 </template>
@@ -20,7 +26,7 @@
 <script setup lang="ts">
 import { computed, defineEmits, defineProps, withDefaults } from 'vue'
 import type { ErrorViolation } from '@/entities/card/model/types'
-import { formatCardNumber, enrichCardNumber } from '@/shared/lib/utils/utils'
+import { formatCardNumber } from '@/shared/lib/utils/utils'
 
 type Props = {
   modelValue?: string

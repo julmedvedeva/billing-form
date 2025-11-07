@@ -7,18 +7,23 @@
       autocomplete="cc-csc"
       placeholder="111"
       :value="displayValue"
-      class="p-1 bg-[#fff] text-[#AAADAC]"
+      class="py-1 px-2 bg-[#fff] text-[#AAADAC]"
       :class="{ error: errors.length > 0 }"
       @input="onInput"
     />
-    <div v-if="errors.length > 0">
-      <p v-for="error in errors" :key="error.field">{{ error.message }}</p>
+    <div v-if="errors.length > 0" class="-mt-4">
+      <p
+        class="text-[10px] text-red-500"
+        v-for="error in errors"
+        :key="error.field"
+      >
+        {{ error.message }}
+      </p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { enrichCVC } from '@/shared/lib/utils/utils'
 import { defineEmits, withDefaults, defineProps, computed } from 'vue'
 import type { ErrorViolation } from '@/entities/card/model/types'
 
@@ -38,7 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>()
 
-const displayValue = computed(() => enrichCVC(props.modelValue ?? ''))
+const displayValue = computed(() => props.modelValue ?? '')
 
 const onInput = (e: Event) => {
   const input = e.target as HTMLInputElement

@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-col gap-[15px] max-w-[280px] w-full">
+  <div class="flex flex-col gap-[15px]">
     <p>Expiration date</p>
 
-    <div class="flex flex-row justify-between">
+    <div class="flex flex-row gap-[15px] items-center">
       <InputCardExpirationMonth
         :model-value="props.modelValue.month"
         @update:model-value="val => onInput(val, 'month')"
@@ -14,8 +14,14 @@
       />
     </div>
 
-    <div v-if="errors.length > 0">
-      <p v-for="error in errors" :key="error.field">{{ error.message }}</p>
+    <div v-if="errors.length > 0" class="-mt-4">
+      <p
+        class="text-[10px] text-red-500"
+        v-for="error in errors"
+        :key="error.field"
+      >
+        {{ error.message }}
+      </p>
     </div>
   </div>
 </template>
@@ -23,7 +29,10 @@
 <script setup lang="ts">
 import InputCardExpirationMonth from './InputCardExpirationMonth.vue'
 import InputCardExpirationYear from './InputCardExpirationYear.vue'
-import type { ErrorViolation, ExpirationDate } from '@/entities/card/model/types'
+import type {
+  ErrorViolation,
+  ExpirationDate,
+} from '@/entities/card/model/types'
 import { defineProps, withDefaults, defineEmits } from 'vue'
 
 type Props = {

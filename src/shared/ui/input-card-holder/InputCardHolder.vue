@@ -11,8 +11,14 @@
       :class="{ error: errors.length > 0 }"
       @input="onInput"
     />
-    <div v-if="errors.length > 0">
-      <p v-for="error in errors" :key="error.field">{{ error.message }}</p>
+    <div v-if="errors.length > 0" class="-mt-4">
+      <p
+        class="text-[10px] text-red-500"
+        v-for="error in errors"
+        :key="error.field"
+      >
+        {{ error.message }}
+      </p>
     </div>
   </div>
 </template>
