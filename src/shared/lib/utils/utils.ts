@@ -21,19 +21,6 @@ export function enrichCardNumber(raw: string | undefined | null): string {
 }
 
 /**
- * Вернёт строку из 3 черных точек вместо цифр CVC.
- */
-export function enrichCVC(raw: string | undefined | null): string {
-  if (!raw) return '•'.repeat(3)
-
-  const digits = raw.replace(/\D/g, '')
-  const last3 =
-    digits.length >= 3 ? digits.slice(-3) : digits.padStart(3, '0').slice(-3)
-
-  return '•'.repeat(last3.length)
-}
-
-/**
  * Генерация случайного месяца (1-12)
  */
 export function getRandomMonth(): string {

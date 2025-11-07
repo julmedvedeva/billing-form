@@ -5,12 +5,10 @@ export class ApiService {
     this.baseUrl = baseUrl
   }
 
-  // GET-запрос (например, список элементов)
   async get<T>(endpoint: string): Promise<T> {
     return this._request<T>('GET', endpoint)
   }
 
-  // POST-запрос (например, отправка данных формы)
   async post<TRequest, TResponse>(
     endpoint: string,
     data: TRequest
@@ -18,7 +16,6 @@ export class ApiService {
     return this._request<TResponse>('POST', endpoint, data)
   }
 
-  // Приватный метод запроса
   private async _request<T>(
     method: 'GET' | 'POST',
     endpoint: string,
@@ -42,7 +39,6 @@ export class ApiService {
     }
   }
 
-  // Обработка кодов ошибок
   private _getErrorMessage(status: number): string {
     switch (status) {
       case 400:

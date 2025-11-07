@@ -33,7 +33,7 @@
 1. Клонируйте репозиторий:
 ```bash
 git clone <repository-url>
-cd billing-form-test
+cd billing-form
 ```
 
 2. Установите зависимости:

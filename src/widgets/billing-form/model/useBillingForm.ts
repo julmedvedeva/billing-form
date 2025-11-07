@@ -26,12 +26,12 @@ export function useBillingForm(options: UseBillingFormOptions = {}) {
     setPaying: storeSetPaying,
     sendCardInfo,
     clearCardData,
+    setCardExpirationDate
   } = useCardStore()
 
   const popup = usePopup()
   const { cardData, fullName } = storeToRefs(useCardStore())
 
-  // Состояние ошибок валидации
   const errors = reactive<Record<string, ErrorViolation[]>>({
     number: [],
     holder: [],
@@ -40,7 +40,6 @@ export function useBillingForm(options: UseBillingFormOptions = {}) {
     paying: [],
   })
 
-  // Флаг для отображения ошибок (показываем только после первой попытки отправки)
   const showErrors = ref(false)
 
   const isViewMode = mode === 'view'
@@ -67,7 +66,7 @@ export function useBillingForm(options: UseBillingFormOptions = {}) {
   }
 
   const setExpDate = (newValue: { month: string; year: string }) => {
-    useCardStore().setCardExpirationDate(newValue)
+    setCardExpirationDate(newValue)
     if (showErrors.value && !isViewMode) {
       errors.expiration = validateExpirationDate(newValue.month, newValue.year)
     }
@@ -87,7 +86,6 @@ export function useBillingForm(options: UseBillingFormOptions = {}) {
 
     showErrors.value = true
 
-    // Валидация всей формы
     const validationErrors = validateCardForm({
       number: cardData.value.number,
       holder: fullName.value,
@@ -124,7 +122,6 @@ export function useBillingForm(options: UseBillingFormOptions = {}) {
     }
   }
 
-  // Загрузка данных при монтировании (если передан callback)
   if (fetchData) {
     onMounted(async () => {
       try {
@@ -135,7 +132,6 @@ export function useBillingForm(options: UseBillingFormOptions = {}) {
     })
   }
 
-  // Очистка данных при размонтировании (если нужно)
   if (autoClear) {
     onBeforeUnmount(() => {
       clearCardData()
