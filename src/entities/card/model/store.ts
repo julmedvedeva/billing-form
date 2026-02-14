@@ -36,8 +36,6 @@ export const useCardStore = defineStore('card', () => {
     cardData.value = data
   }
 
-  const getCardData = () => cardData.value
-
   const clearCardData = () => {
     cardData.value = {
       name: '',
@@ -94,7 +92,6 @@ export const useCardStore = defineStore('card', () => {
     cardData,
     fullName,
     setCardData,
-    getCardData,
     clearCardData,
     setCardNumber,
     setCardCvc,
