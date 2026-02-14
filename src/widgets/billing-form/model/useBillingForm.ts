@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useCardStore } from '@/entities/card/model/store'
 import { usePopup } from '@/shared/lib/composables/usePopup'
 import type { ErrorViolation } from '@/entities/card/model/types'
-import { CardValidator } from '@/shared/lib/validators/CardValidator'
+import { CardValidator } from '@/shared/lib/utils/CardValidator.ts'
 
 export interface UseBillingFormOptions {
   mode?: 'edit' | 'view'

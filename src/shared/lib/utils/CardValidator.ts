@@ -1,4 +1,4 @@
-import type { ErrorViolation } from '@/entities/card/model/types'
+import type { ErrorViolation } from '@/entities/card/model/types.ts'
 
 export class CardValidator {
   private errors: ErrorViolation[] = []
