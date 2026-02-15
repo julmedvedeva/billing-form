@@ -3,14 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useCardStore } from '@/entities/card/model/store'
 import { usePopup } from '@/shared/lib/composables/usePopup'
 import type { ErrorViolation } from '@/entities/card/model/types'
-import {
-  validateCardNumber,
-  validateCardHolder,
-  validateCVC,
-  validateExpirationDate,
-  validatePayingAmount,
-  validateCardForm,
-} from '@/shared/lib/validators/cardValidators'
+import { CardValidator } from '@/shared/lib/utils/CardValidator.ts'
 
 export interface UseBillingFormOptions {
   mode?: 'edit' | 'view'
@@ -32,6 +25,9 @@ export function useBillingForm(options: UseBillingFormOptions = {}) {
   const popup = usePopup()
   const { cardData, fullName } = storeToRefs(useCardStore())
 
+  // Создаём экземпляр валидатора
+  const validator = new CardValidator()
+
   const errors = reactive<Record<string, ErrorViolation[]>>({
     number: [],
     holder: [],
@@ -47,35 +43,35 @@ export function useBillingForm(options: UseBillingFormOptions = {}) {
   const setCardNumber = (value: string) => {
     storeSetCardNumber(value)
     if (showErrors.value && !isViewMode) {
-      errors.number = validateCardNumber(value)
+      errors.number = validator.validateCardNumber(value)
     }
   }
 
   const updateFullName = (value: string) => {
     fullName.value = value
     if (showErrors.value && !isViewMode) {
-      errors.holder = validateCardHolder(value)
+      errors.holder = validator.validateCardHolder(value)
     }
   }
 
   const setCardCvc = (value: string) => {
     storeSetCardCvc(value)
     if (showErrors.value && !isViewMode) {
-      errors.cvc = validateCVC(value)
+      errors.cvc = validator.validateCVC(value)
     }
   }
 
   const setExpDate = (newValue: { month: string; year: string }) => {
     setCardExpirationDate(newValue)
     if (showErrors.value && !isViewMode) {
-      errors.expiration = validateExpirationDate(newValue.month, newValue.year)
+      errors.expiration = validator.validateExpirationDate(newValue.month, newValue.year)
     }
   }
 
   const setPaying = (value: string) => {
     storeSetPaying(value)
     if (showErrors.value && !isViewMode) {
-      errors.paying = validatePayingAmount(value)
+      errors.paying = validator.validatePayingAmount(value)
     }
   }
 
@@ -86,7 +82,7 @@ export function useBillingForm(options: UseBillingFormOptions = {}) {
 
     showErrors.value = true
 
-    const validationErrors = validateCardForm({
+    const validationErrors = validator.validateCardForm({
       number: cardData.value.number,
       holder: fullName.value,
       cvc: cardData.value.cvc,
